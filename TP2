@@ -1,0 +1,52 @@
+program TP2;
+uses crt;
+var descartar: char;
+var intdescart: integer;
+
+procedure Empresas();
+begin
+writeln('Bienvenidos al menu Empresas');
+
+//CUERPO DEL MENU EMPRESAS
+
+writeln('Desea salir al Menu Principal?(S o N)');
+readln(descartar);
+if (descartar = 'N') then
+   Empresas();
+
+end;
+
+procedure Clientes();
+begin
+writeln('Bienvenidos al menu Clientes');
+
+//CUERPO DEL MENU CLIENTES
+
+writeln('Desea salir al Menu Principal?(S o N)');
+readln(descartar);
+if descartar = 'N' then
+   Clientes();
+end;
+
+procedure MenuPrincipal();
+begin
+     writeln('1.EMPRESAS'); 
+     writeln('2.CLIENTES');
+     writeln('0.salir');
+     readln(intdescart);
+     case intdescart of
+          1:Empresas();
+          2:Clientes();
+          0:writeln('Saliendo del programa...');
+          else writeln(intdescart,'no es una opcion valida');
+     end;
+     MenuPrincipal();
+end;
+
+
+begin
+writeln('Bienvenidos  a Nuestro TP2 :');
+writeln('Presione Enter para continuar');
+readln(descartar);
+MenuPrincipal();
+end.
