@@ -1,32 +1,92 @@
 program TP2;
 uses crt;
-var descartar: char;
-var intdescart: integer;
+type
+    array6 = array[1..10,1..6] of string;
+    array2 = array[1..10,1..2] of string;
+var
+   descartar: char;
+   intdescart: integer;
+//variables de un solo uso
+   empresasarray: array6;
+// el array empresas tiene los elemntos ordenados asi, cada columna es una empresa:
+//COD-EMP
+//Nombre
+//Direccion
+//Mail
+//Telefono
+//COD_Ciduad: string(3)
+   ciudadesarray: array2;
+//Orden:
+//COD_Ciudad
+//Nombre de ciudad
+   clientesarray: array2;
+//Orden:
+//Nombre y Apellido
+// Mail
+   proyectosarray: array6;
+//COD_Proyecto
+//COD_Empresa
+//Etapa:Proceso, Obra, Terminado
+//Tipo:Casa, Edificio departamento, Edificio Oficina, Loteos
+//COD_ciudad
+//Cantidad
+
+//**Funciones y Procedimientos de la aplicacion
+//-------------------------------------------------------------------------------------------------------
+Function ValidarClave(clave:string; menu:integer): integer;
+var
+    claveEmpresas: string;
+    claveClientes: string;
+begin
+
+    claveClientes:='Clientes';
+    claveEmpresas:='Empresas';
+
+    if (menu=1) then
+       begin
+       // HAY QUE HACER ANDAR ESTO ACA NO C XQ LOS STRINGS ME HACEN RENEGAR TANTO
+            if() then
+               writeln('Clave Correcta')
+            else
+                writeln('Clave Incorrecta');
+                exit(0);
+       end
+    else
+        if(clave=claveEmpresas) then
+           writeln('Clave Correcta')
+        else
+            writeln('Clave Incorrecta');
+
+end;
+
 
 procedure Empresas();
 begin
-writeln('Bienvenidos al menu Empresas');
+     writeln('Bienvenidos al menu Empresas');
 
-//CUERPO DEL MENU EMPRESAS
+     //CUERPO DEL MENU EMPRESAS
 
-writeln('Desea salir al Menu Principal?(S o N)');
-readln(descartar);
-if (descartar = 'N') then
-   Empresas();
+     writeln('Desea salir al Menu Principal?(S o N)');
+     readln(descartar);
+     if (descartar = 'N') then
+            Empresas();
 
 end;
 
 procedure Clientes();
 begin
-writeln('Bienvenidos al menu Clientes');
+     writeln('Bienvenidos al menu Clientes'); 
+     writeln('Ingresar Clave');
+     readln(descartar);
+     ValidarClave(descartar,1);
+     //CUERPO DEL MENU CLIENTES
 
-//CUERPO DEL MENU CLIENTES
-
-writeln('Desea salir al Menu Principal?(S o N)');
-readln(descartar);
-if descartar = 'N' then
-   Clientes();
+     writeln('Desea salir al Menu Principal?(S o N)');
+     readln(descartar);
+     if descartar = 'N' then
+        Clientes();
 end;
+
 
 procedure MenuPrincipal();
 begin
@@ -42,11 +102,11 @@ begin
      end;
      MenuPrincipal();
 end;
-
-
+//**Arranca la aplicacion
+//---------------------------------------------------------------------------------------------------------------------------------
 begin
-writeln('Bienvenidos  a Nuestro TP2 :');
-writeln('Presione Enter para continuar');
-readln(descartar);
-MenuPrincipal();
+     writeln('Bienvenidos  a Nuestro TP2 :');
+     writeln('Presione Enter para continuar');
+     readln(descartar);
+     MenuPrincipal();
 end.
