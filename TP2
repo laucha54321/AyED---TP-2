@@ -4,7 +4,7 @@ type
     array6 = array[1..10,1..6] of string;
     array2 = array[1..10,1..2] of string;
 var
-   descartar: char;
+   descartar: string;
    intdescart: integer;
 //variables de un solo uso
    empresasarray: array6;
@@ -33,58 +33,109 @@ var
 
 //**Funciones y Procedimientos de la aplicacion
 //-------------------------------------------------------------------------------------------------------
-Function ValidarClave(clave:string; menu:integer): integer;
+procedure MenuPrincipal; forward;
+procedure AltaCiudades();
+begin
+     writeln('Altas de CIUDADES: ');
+     writeln('Ingresar COD_Ciudad: ');
+     readln(ciudadesarray[1,1]);
+     writeln('Ingresar Nombre de Ciudad: ');
+     readln(ciudadesarray[1,2]);
+     writeln(ciudadesarray[1,1]);
+     writeln(ciudadesarray[1,2]);
+end;
+
+procedure AltaEmpresas();
+begin
+      writeln('Altas de EMPRESAS: ');
+end;
+
+procedure AltaProyectos();
+begin
+     writeln('Altas de PROYECTOS: ');
+end;
+
+procedure AltaProductos();
+begin
+     writeln('Altas de PRODUCTOS: ');
+end;
+
+procedure AltaClientes();
+begin
+    writeln('Altas de CLIENTES: ');
+end;
+
+procedure ConsultaProyectos();
+begin
+    writeln('Consulta de Proyectos: ');
+end;
+
+//Menu del menu de empresas (ya esta validado la clave cuando llega aca)
+procedure Empresas();
+begin
+        writeln('Clave Correcta');
+        writeln('Bienvenidos al menu Empresas Desarolladoras');
+        writeln('1.Alta de CIUDADES');
+        writeln('2.Alta de EMPRESAS');
+        writeln('3.Alta de PROYECTOS');
+        writeln('4.Alta de PRODUCTOS');
+        writeln('0.Volver al Menu Principal');
+        readln(intdescart);
+        case intdescart of
+             1:AltaCiudades();
+             2:AltaEmpresas();
+             3:AltaProyectos();
+             4:AltaProductos();
+             0:MenuPrincipal();
+        else writeln(intdescart,'no es una opcion valida');
+        end;
+        Empresas();
+end;
+//Menu del menu clientes (ya esta validado la clave cuando llega aca)
+
+procedure Clientes();
+begin
+        writeln('Clave Correcta');
+        writeln('Bienvenidos al menu Clientes');
+        writeln('1.Alta de CLIENTE');
+        writeln('2.Consulta de PROYECTOS');
+        writeln('0.Volver al Menu Principal');
+        readln(intdescart);
+        case intdescart of
+             1:AltaClientes();
+             2:ConsultaProyectos();
+             0:MenuPrincipal();
+        else writeln(intdescart,'no es una opcion valida');
+     end;
+end;
+
+procedure ValidarClave(menu:integer);
 var
+    clave:string;
     claveEmpresas: string;
     claveClientes: string;
 begin
 
-    claveClientes:='Clientes';
+    claveClientes:='hola';
     claveEmpresas:='Empresas';
 
     if (menu=1) then
        begin
-       // HAY QUE HACER ANDAR ESTO ACA NO C XQ LOS STRINGS ME HACEN RENEGAR TANTO
-            if() then
-               writeln('Clave Correcta')
+            writeln('Ingresar clave(menu clientes)');
+            readln(clave);
+            if(claveClientes=clave) then
+               Clientes()
             else
                 writeln('Clave Incorrecta');
-                exit(0);
        end
     else
+        writeln('Ingresar clave(menu empresas)');
+        readln(clave);
         if(clave=claveEmpresas) then
-           writeln('Clave Correcta')
+            Empresas()
         else
             writeln('Clave Incorrecta');
 
-end;
-
-
-procedure Empresas();
-begin
-     writeln('Bienvenidos al menu Empresas');
-
-     //CUERPO DEL MENU EMPRESAS
-
-     writeln('Desea salir al Menu Principal?(S o N)');
-     readln(descartar);
-     if (descartar = 'N') then
-            Empresas();
-
-end;
-
-procedure Clientes();
-begin
-     writeln('Bienvenidos al menu Clientes'); 
-     writeln('Ingresar Clave');
-     readln(descartar);
-     ValidarClave(descartar,1);
-     //CUERPO DEL MENU CLIENTES
-
-     writeln('Desea salir al Menu Principal?(S o N)');
-     readln(descartar);
-     if descartar = 'N' then
-        Clientes();
 end;
 
 
@@ -95,8 +146,8 @@ begin
      writeln('0.salir');
      readln(intdescart);
      case intdescart of
-          1:Empresas();
-          2:Clientes();
+          1:ValidarClave(0);
+          2:ValidarClave(1);
           0:writeln('Saliendo del programa...');
           else writeln(intdescart,'no es una opcion valida');
      end;
