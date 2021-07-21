@@ -1,84 +1,427 @@
 program TP2;
 uses crt;
 type
+    vector2 = array[1..2] of string;
     array6 = array[1..10,1..6] of string;
     array2 = array[1..10,1..2] of string;
 var
+   avatarState: boolean;
+   //es para ver la informacion que no le quiero mostrar al usuario pero le puede servir al que esta tipeando codigo
+
    descartar: string;
    intdescart: integer;
-//variables de un solo uso
+   //variables de un solo uso
+
    empresasarray: array6;
-// el array empresas tiene los elemntos ordenados asi, cada columna es una empresa:
-//COD-EMP
-//Nombre
-//Direccion
-//Mail
-//Telefono
-//COD_Ciduad: string(3)
+   // el array empresas tiene los elemntos ordenados asi, cada columna es una empresa:
+   //COD-EMP
+   //Nombre
+   //Direccion
+   //Mail
+   //Telefono
+   //COD_Ciduad: string(3)
+
    ciudadesarray: array2;
-//Orden:
-//COD_Ciudad
-//Nombre de ciudad
+   //Orden:
+   //COD_Ciudad
+   //Nombre de ciudad
+
    clientesarray: array2;
-//Orden:
-//Nombre y Apellido
-// Mail
+   //Orden:
+   //Nombre y Apellido
+   // Mail
+
    proyectosarray: array6;
-//COD_Proyecto
-//COD_Empresa
-//Etapa:Proceso, Obra, Terminado
-//Tipo:Casa, Edificio departamento, Edificio Oficina, Loteos
-//COD_ciudad
-//Cantidad
+   //COD_Proyecto
+   //COD_Empresa
+   //Etapa:Proceso, Obra, Terminado
+   //Tipo:Casa, Edificio departamento, Edificio Oficina, Loteos
+   //COD_ciudad
+   //Cantidad
 
-//**Funciones y Procedimientos de la aplicacion
-//-------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+//**Funciones y Procedimientos de la aplicacion********************************************************************
+//-----------------------------------------------------------------------------------------------------------------
+
 procedure MenuPrincipal; forward;
+procedure Empresas; forward;
+procedure Clientes; forward;
+
+//-----------------------------------------------------------------------------------------------------------------
+//Procedure AltaCiudades-------------------------------------------------------------------------------------------
 procedure AltaCiudades();
+var
+   confirmacion:char;
+   i:integer;
+   j:integer;
+   k:integer;
 begin
+     i:=1;
+     j:=0;
+     k:=0;
      writeln('Altas de CIUDADES: ');
-     writeln('Ingresar COD_Ciudad: ');
-     readln(ciudadesarray[1,1]);
-     writeln('Ingresar Nombre de Ciudad: ');
-     readln(ciudadesarray[1,2]);
-     writeln(ciudadesarray[1,1]);
-     writeln(ciudadesarray[1,2]);
+     writeln('Desea Ingresar una ciudad (s o n): ');
+      readln(confirmacion);
+      if (confirmacion='s') or (confirmacion='S') then
+      begin
+           while (not(ciudadesarray[i,1]='-')) do
+           begin
+                i:=i+1;
+           end;
+           if avatarState=true then writeln('Lugar vacio posicion: ',i);
+           for j:=1 to 2 do
+           begin
+                if j=1 then
+                begin
+                     writeln('Ingresar ', ciudadesarray[1,j],': ',' (3 CARACTERES)');
+                     readln(descartar);
+                     if length(descartar)=3 then ciudadesarray[i,j]:= descartar
+                     else
+                     begin
+                     writeln('Error al ingresar COD_ciudad, Volviendo...');
+                      AltaCiudades();
+                      end;
+                end
+                else
+                begin
+                writeln('Ingresar ', ciudadesarray[1,j],': ');
+                readln(ciudadesarray[i,j]);
+                end;
+           end;
+           if avatarState=true then
+           begin
+                writeln('');
+                writeln('Datos Ingresados: ');
+                for k:=2 to 10 do
+                begin
+                     writeln('');
+                     writeln('Ciudades ',k-1,': ' );
+                     for j:=1 to 2 do
+                     begin
+                          writeln(ciudadesarray[1,j],': ',ciudadesarray[k,j]);
+                     end;
+                end;
+          end;
+      end;
+      Empresas();
 end;
 
+//-----------------------------------------------------------------------------------------------------
+//Procedure OrdenarCiudades----------------------------------------------------------------------------
+procedure OrdenarCiudades();
+var
+   i:integer;
+   k:integer;
+   aux:vector2;
+begin
+     for k:=0 to 10 do
+     begin
+         for i:=2 to 9 do
+         begin
+              if (ciudadesarray[i,1] > ciudadesarray[i+1,1])then
+              begin
+              //Guardando los datos antes de sobreescribirlos
+                  aux[1]:=ciudadesarray[i,1];
+                  aux[2]:=ciudadesarray[i,2];
+              //Moviendo los datos a la derecha
+                  ciudadesarray[i,1]:=ciudadesarray[i+1,1];
+                  ciudadesarray[i,2]:=ciudadesarray[i+1,2];
+                  ciudadesarray[i+1,1]:=aux[1];
+                  ciudadesarray[i+1,2]:=aux[2];
+              end;
+         end;
+     end;
+     if avatarstate=true then
+     begin
+          for i:=2 to 10 do
+          begin
+               writeln(ciudadesarray[1,1],': ',ciudadesarray[i,1]);
+               writeln(ciudadesarray[1,2],': ',ciudadesarray[i,2]);
+          end;
+     end;
+end;
+
+//--------------------------------------------------------------------------------------------
+//Procedure AltaEmpresas----------------------------------------------------------------------
 procedure AltaEmpresas();
+var
+   confirmacion:char;
+   i:integer;
+   j:integer;
+   k:integer;
 begin
+     i:=1;
+     j:=1;
+     k:=1;
       writeln('Altas de EMPRESAS: ');
+      writeln('Desea Ingresar una empresa (s o n): ');
+      readln(confirmacion);
+      if (confirmacion='s') or (confirmacion='S') then
+      begin
+           while (not(empresasarray[i,1]='-')) do
+           begin
+           i:=i+1;
+           end;
+           if avatarState=true then writeln('Lugar vacio posicion: ',i);
+           for j:=1 to 5 do
+           begin
+                writeln('Ingresar ', empresasarray[1,j],': ');
+                readln(empresasarray[i,j]);
+           end;
+           writeln('');
+           writeln('Seleccionar ', empresasarray[1,6],': ');
+           for j:=2 to 10 do
+           begin
+                writeln(j,'. ',ciudadesarray[j,2]);
+           end;
+           readln(intdescart);
+           case (intdescart) of
+                2:empresasarray[i,6]:=ciudadesarray[2,1];
+                3:empresasarray[i,6]:=ciudadesarray[3,1];
+                4:empresasarray[i,6]:=ciudadesarray[4,1];
+                5:empresasarray[i,6]:=ciudadesarray[5,1];
+                6:empresasarray[i,6]:=ciudadesarray[6,1];
+                7:empresasarray[i,6]:=ciudadesarray[7,1];
+                8:empresasarray[i,6]:=ciudadesarray[8,1];
+                9:empresasarray[i,6]:=ciudadesarray[9,1];
+           end;
+           if avatarState=true then
+           begin
+                writeln('');
+                writeln('Datos Ingresados: ');
+                for k:=2 to 10 do
+                begin
+                     writeln('');
+                     writeln('Empresa ',k-1,': ' );
+                     for j:=1 to 6 do
+                     begin
+                          writeln(empresasarray[1,j],': ',empresasarray[k,j]);
+                     end;
+                end;
+          end;
+     end;
+     Empresas();
 end;
 
+//-------------------------------------------------------------------------------------------------------
+//Proccedure AltaProyectos-------------------------------------------------------------------------------
 procedure AltaProyectos();
+var
+   confirmacion:char;
+   i:integer;
+   j:integer;
+   k:integer;
 begin
-     writeln('Altas de PROYECTOS: ');
+     i:=1;
+     j:=1;
+     k:=1;
+      writeln('Altas de Proyectos: ');
+      writeln('Desea Ingresar un Proyecto (s o n): ');
+      readln(confirmacion);
+      if (confirmacion='s') or (confirmacion='S') then
+      begin
+           //Busco el proximo lugar vacio en el array de datos
+           while (not(proyectosarray[i,1]='-')) do
+           begin
+           i:=i+1;
+           end;
+           if avatarState=true then writeln('Lugar vacio posicion: ',i);
+
+           //el lugar vacio queda guardado en i
+           //Ingreso el codigo de proyecto
+           writeln('Ingresar COD_PRO: ');
+           readln(proyectosarray[i,1]);
+           //Ingreso el codigo de empresa
+           writeln('Seleccionar COD_EMP: ');
+           for j:=2 to 10 do
+           begin
+               writeln(j,'. ',empresasarray[j,2]);
+           end;
+           readln(intdescart);
+           case (intdescart) of
+                2:proyectosarray[i,2]:=empresasarray[2,2];
+                3:proyectosarray[i,2]:=empresasarray[3,2];
+                4:proyectosarray[i,2]:=empresasarray[4,2];
+                5:proyectosarray[i,2]:=empresasarray[5,2];
+                6:proyectosarray[i,2]:=empresasarray[6,2];
+                7:proyectosarray[i,2]:=empresasarray[7,2];
+                8:proyectosarray[i,2]:=empresasarray[8,2];
+                9:proyectosarray[i,2]:=empresasarray[9,2];
+           end;
+           //Ingreso la etapa en la que se ecuentra
+           writeln('Ingresar Etapa (P, O, T):');
+           readln(descartar);
+           if (descartar='p') or (descartar='o') or (descartar='t') or (descartar='P') or (descartar='O') or (descartar='T') then
+           proyectosarray[i,3]:=descartar
+           else
+           begin
+               writeln('Ingreso de datos Incorrecto, VOLVIENDO...');
+               //borrar datos ingresados
+               for k:=1 to 6 do
+               begin
+                    proyectosarray[i,k]:='-';
+               end;
+               AltaProyectos();
+           end;
+           //Ingreso el tipo de proyecto
+           writeln('Ingresar Tipo de proyecto(C, D, O, L): ');
+           readln(descartar);
+           if (descartar='c') or (descartar='C') or (descartar='d') or (descartar='D') or (descartar='o') or (descartar='O') or (descartar='l') or (descartar='L') then
+           proyectosarray[i,4]:=descartar
+           else
+           begin
+               writeln('Ingreso de datos Incorrecto, VOLVIENDO...');
+               //Hay que borrar los datos ya ingresados en el array
+               for k:=1 to 6 do
+               begin
+                    proyectosarray[i,k]:='-';
+               end;
+               AltaProyectos();
+           end;
+           //Ingreso de Codigo de ciudad
+           writeln('');
+           writeln('Seleccionar COD_ciudad: ');
+           for j:=2 to 10 do
+           begin
+                writeln(j,'. ',ciudadesarray[j,2]);
+           end;
+           readln(intdescart);
+           case (intdescart) of
+                2:proyectosarray[i,5]:=ciudadesarray[2,1];
+                3:proyectosarray[i,5]:=ciudadesarray[3,1];
+                4:proyectosarray[i,5]:=ciudadesarray[4,1];
+                5:proyectosarray[i,5]:=ciudadesarray[5,1];
+                6:proyectosarray[i,5]:=ciudadesarray[6,1];
+                7:proyectosarray[i,5]:=ciudadesarray[7,1];
+                8:proyectosarray[i,5]:=ciudadesarray[8,1];
+                9:proyectosarray[i,5]:=ciudadesarray[9,1];
+           end;
+           //Ingreso de cant.
+           writeln('Ingresar Cantidad: ');
+           readln(proyectosarray[i,6]);
+
+           //Mostrar los datos en avatarstate true
+           if avatarState=true then
+           begin
+                writeln('');
+                writeln('Datos Ingresados: ');
+                for k:=2 to 10 do
+                begin
+                     writeln('');
+                     writeln('Proyecto ',k-1,': ' );
+                     for j:=1 to 6 do
+                     begin
+                          writeln(proyectosarray[1,j],': ',proyectosarray[k,j]);
+                     end;
+                end;
+          end;
+     end;
+     Empresas();
 end;
 
+//-----------------------------------------------------------------------------------------------------------------
+//procedure AltaProductos------------------------------------------------------------------------------------------
 procedure AltaProductos();
 begin
-     writeln('Altas de PRODUCTOS: ');
+     writeln('TODAVIA ESTAMOS TRABAJANDO EN ALTA PRODUCTOS PARA MAS INFORMACION IR A: ');
+     writeln('https://github.com/laucha54321/AyED---TP-2');
+     writeln('');
+     writeln('Presiona ENTER para continuar');
+     readln();
+     Empresas();
 end;
 
+//----------------------------------------------------------------------------------------------------------
+//Procedure AltaClientes------------------------------------------------------------------------------------
 procedure AltaClientes();
+var
+   confirmacion:char;
+   i:integer;
+   j:integer;
+   k:integer;
 begin
-    writeln('Altas de CLIENTES: ');
+     i:=1;
+     j:=0;
+     k:=0;
+     writeln('Altas de Clientes: ');
+     writeln('Desea Ingresar una Clientes (s o n): ');
+      readln(confirmacion);
+      if (confirmacion='s') or (confirmacion='S') then
+      begin
+           while (not(clientesarray[i,1]='-')) do
+           begin
+                i:=i+1;
+           end;
+           if avatarState=true then writeln('Lugar vacio posicion: ',i);
+           for j:=1 to 2 do
+           begin
+                writeln('Ingresar ', clientesarray[1,j],': ');
+                readln(clientesarray[i,j]);
+           end;
+           if avatarState=true then
+           begin
+                writeln('');
+                writeln('Datos Ingresados: ');
+                for k:=2 to 10 do
+                begin
+                     writeln('');
+                     writeln('Clientes ',k-1,': ' );
+                     for j:=1 to 2 do
+                     begin
+                          writeln(clientesarray[1,j],': ',clientesarray[k,j]);
+                     end;
+                end;
+          end;
+      end;
+      Clientes();
 end;
-
+//-------------------------------------------------------------------------------------------------------------------
+//ConsultaProyectos--------------------------------------------------------------------------------------------------
 procedure ConsultaProyectos();
+   procedure busqueda(a:string;b:string);
+   var
+      i:integer;
+      j:integer;
+   begin
+        for i:=2 to 10 do
+        begin
+             if (a=proyectosarray[i,4]) or (b=proyectosarray[i,4]) then
+             begin
+                  writeln('');
+                  writeln('Proyecto Numero ',i,': ');
+                  for j:=1 to 6 do
+                  begin
+                       writeln(proyectosarray[1,j],': ', proyectosarray[i,j]);
+                  end;
+             end;
+        end;
+   end;
 begin
     writeln('Consulta de Proyectos: ');
+    writeln('1. Casa');
+    writeln('2. Edificio Departamento');
+    writeln('3. Edificio Oficina');
+    writeln('4. Loteos');
+    readln(intdescart);
+    case (intdescart)of
+    1:  busqueda('C','c');
+    2:  busqueda('D','d');
+    3:  busqueda('O','o');
+    4:  busqueda('L','l');
+    end;
 end;
 
-//Menu del menu de empresas (ya esta validado la clave cuando llega aca)
+//----------------------------------------------------------------------------------
+//Menu del menu de empresas (ya esta validado la clave cuando llega aca)------------
 procedure Empresas();
 begin
-        writeln('Clave Correcta');
+        writeln('');
         writeln('Bienvenidos al menu Empresas Desarolladoras');
         writeln('1.Alta de CIUDADES');
         writeln('2.Alta de EMPRESAS');
         writeln('3.Alta de PROYECTOS');
         writeln('4.Alta de PRODUCTOS');
+        if avatarstate=true then writeln('9.ORDENAR CIUDADES');
         writeln('0.Volver al Menu Principal');
         readln(intdescart);
         case intdescart of
@@ -86,15 +429,18 @@ begin
              2:AltaEmpresas();
              3:AltaProyectos();
              4:AltaProductos();
+             9:OrdenarCiudades();
              0:MenuPrincipal();
         else writeln(intdescart,'no es una opcion valida');
         end;
         Empresas();
 end;
-//Menu del menu clientes (ya esta validado la clave cuando llega aca)
 
+//-----------------------------------------------------------------------------------------------
+//Menu del menu clientes (ya esta validado la clave cuando llega aca)----------------------------
 procedure Clientes();
 begin
+        writeln('');
         writeln('Clave Correcta');
         writeln('Bienvenidos al menu Clientes');
         writeln('1.Alta de CLIENTE');
@@ -109,6 +455,8 @@ begin
      end;
 end;
 
+//------------------------------------------------------------------------------------------
+//Procedure ValidarClave--------------------------------------------------------------------
 procedure ValidarClave(menu:integer);
 var
     clave:string;
@@ -129,18 +477,21 @@ begin
                 writeln('Clave Incorrecta');
        end
     else
+    begin
         writeln('Ingresar clave(menu empresas)');
         readln(clave);
         if(clave=claveEmpresas) then
             Empresas()
         else
             writeln('Clave Incorrecta');
-
+   end;
 end;
 
-
+//-------------------------------------------------------------------------------------------------------
+//Procedure MenuPrincipal--------------------------------------------------------------------------------
 procedure MenuPrincipal();
 begin
+     writeln('');
      writeln('1.EMPRESAS'); 
      writeln('2.CLIENTES');
      writeln('0.salir');
@@ -149,15 +500,115 @@ begin
           1:ValidarClave(0);
           2:ValidarClave(1);
           0:writeln('Saliendo del programa...');
-          else writeln(intdescart,'no es una opcion valida');
+          else writeln(intdescart,' no es una opcion valida');
      end;
      MenuPrincipal();
 end;
-//**Arranca la aplicacion
+
+//---------------------------------------------------------------------------------------------------------
+//Procedure inicarDatos------------------------------------------------------------------------------------
+procedure iniciarDatos();
+var
+          i:integer;
+          j:integer;
+
+begin
+
+      //Empresas array --   [10,6]
+      if avatarState=true then
+      begin
+      writeln('');
+      writeln('EmpresasArray: ');
+      end;
+      empresasarray[1,1]:='COD-EMP';
+      empresasarray[1,2]:='Nombre';
+      empresasarray[1,3]:='Direccion';
+      empresasarray[1,4]:='Mail';
+      empresasarray[1,5]:='Telefono';
+      empresasarray[1,6]:='COD_Ciudad';
+
+     for i:=2 to 10 do
+     begin
+          for j:=1 to 6 do
+          begin
+               empresasarray[i,j]:='-';
+               if avatarState=true then write(empresasarray[i,j]);
+          end;
+          if avatarState=true then writeln('');
+     end;
+
+    //Proyectos array -- [10,6]
+    proyectosarray[1,1]:='COD_PRO';
+    proyectosarray[1,2]:='COD_EMP';
+    proyectosarray[1,3]:='Etapa';
+    proyectosarray[1,4]:='Tipo';
+    proyectosarray[1,5]:='COD_Ciudad';
+    proyectosarray[1,6]:='Cantidad';
+    if avatarState=true then
+    begin
+         writeln('');
+         writeln('ProeyectosArray: ');
+    end;
+    for i:=2 to 10 do
+    begin
+          for j:=1 to 6 do
+          begin
+               proyectosarray[i,j]:='-';
+               if avatarState=true then write(proyectosarray[i,j]);
+          end;
+          if avatarState=true then writeln('');
+     end;
+
+     //Ciudades array -- [10,2]
+     ciudadesarray[1,1]:='COD_Ciudad';
+     ciudadesarray[1,2]:='Nombre_Ciudad';
+
+     if avatarState=true then
+     begin
+          writeln('');
+          writeln('CiudadesArray: ');
+     end;
+     for i:=2 to 10 do
+     begin
+          for j:=1 to 2 do
+          begin
+               ciudadesarray[i,j]:='-';
+               if avatarState=true then write(ciudadesarray[i,j]);
+          end;
+          if avatarState=true then writeln('');
+     end;
+
+     //Clientes array -- [10,2]
+     clientesarray[1,1]:='Nombre_y_Apellido';
+     clientesarray[1,2]:='Mail';
+
+     if avatarState=true then
+     begin
+          writeln('');
+          writeln('ClientesArray: ');
+     end;
+     for i:=2 to 10 do
+     begin
+          for j:=1 to 2 do
+          begin
+               clientesarray[i,j]:='-';
+               if avatarState=true then write(clientesarray[i,j]);
+          end;
+          if avatarState=true then writeln('');
+     end;
+end;
+
+//--------------------------------------------------------------------------------------------------------------------------------
+//**Arranca la aplicacion**********************************************************************************************
 //---------------------------------------------------------------------------------------------------------------------------------
 begin
+
+     avatarState:=true;
+
+     iniciarDatos();
+     writeln('');
      writeln('Bienvenidos  a Nuestro TP2 :');
-     writeln('Presione Enter para continuar');
-     readln(descartar);
+     writeln('Presione ENTER para continuar');
+     readln();
      MenuPrincipal();
 end.
