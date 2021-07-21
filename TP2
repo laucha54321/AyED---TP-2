@@ -609,6 +609,12 @@ begin
      writeln('');
      writeln('Bienvenidos  a Nuestro TP2 :');
      writeln('Presione ENTER para continuar');
-     readln();
+     readln(descartar);
+     if descartar='avatar' then
+     begin
+          writeln('El Estado Avatar es un mecanismo de defensa, diseñado para potenciarte con todas las habilidades y la sabiduría de los antiguos Avatares.', ' El brillo es la combinación de todas tus vidas pasadas, que concentran su energía en tu cuerpo. En Estado Avatar, eres sumamente poderoso... pero también, eres muy vulnerable.', ' Si tú mueres en Estado Avatar, el ciclo de reencarnación se rompería, y el Avatar... dejaría de existir.');
+          writeln('-Roku a Aang');
+          avatarstate:=true;
+     end;
      MenuPrincipal();
 end.
