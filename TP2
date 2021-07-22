@@ -5,8 +5,8 @@ type
     array6 = array[1..10,1..6] of string;
     array2 = array[1..10,1..2] of string;
 var
-   avatarState: boolean;
-   //es para ver la informacion que no le quiero mostrar al usuario pero le puede servir al que esta tipeando codigo
+   avatarState: boolean;   //es para ver la informacion que no le quiero mostrar al usuario pero le puede servir al que esta tipeando codigo
+
 
    descartar: string;
    intdescart: integer;
@@ -46,6 +46,34 @@ var
 procedure MenuPrincipal; forward;
 procedure Empresas; forward;
 procedure Clientes; forward;
+procedure DatosPruebas; forward;
+procedure OrdenarCiudades; forward;
+
+//-----------------------------------------------------------------------------------------------------------------
+//Procedure ChequeoArrayCiudades-------------------------------------------------------------------------------------------
+function ChequeoArrayCiudades(chequear:string):boolean;
+var
+   i:integer;
+begin
+   for i:=2 to 10 do
+   begin
+        if chequear=ciudadesarray[i,1] then exit(false);
+   end;
+   exit(true);
+end;
+
+//-----------------------------------------------------------------------------------------------------------------
+//Procedure ChequeoArrayEmpresas-------------------------------------------------------------------------------------------
+function ChequeoArrayEmpresas(chequear:string):boolean;
+var
+   i:integer;
+begin
+   for i:=2 to 10 do
+   begin
+        if chequear=empresasarray[i,1] then exit(false);
+   end;
+   exit(true);
+end;
 
 //-----------------------------------------------------------------------------------------------------------------
 //Procedure AltaCiudades-------------------------------------------------------------------------------------------
@@ -75,7 +103,7 @@ begin
                 begin
                      writeln('Ingresar ', ciudadesarray[1,j],': ',' (3 CARACTERES)');
                      readln(descartar);
-                     if length(descartar)=3 then ciudadesarray[i,j]:= descartar
+                     if (length(descartar)=3) and (ChequeoArrayCiudades(descartar)=true)  then ciudadesarray[i,j]:= descartar
                      else
                      begin
                      writeln('Error al ingresar COD_ciudad, Volviendo...');
@@ -103,6 +131,7 @@ begin
                 end;
           end;
       end;
+      OrdenarCiudades();
       Empresas();
 end;
 
@@ -165,8 +194,26 @@ begin
            if avatarState=true then writeln('Lugar vacio posicion: ',i);
            for j:=1 to 5 do
            begin
+                if j=1 then
+                begin
+                   writeln('Ingresar ', empresasarray[1,j],': (3 CARACTERES)');
+                   readln(descartar);
+                   if (length(descartar)=3) and (ChequeoArrayEmpresas(descartar)) then
+                   begin
+                        empresasarray[i,1]:=descartar;
+                   end
+                   else
+                   begin
+                        writeln('Error al ingresar Empresa, VOLVIENDO...');
+                        writeln('');
+                        AltaEmpresas();
+                   end;
+                end
+                else
+                begin
                 writeln('Ingresar ', empresasarray[1,j],': ');
                 readln(empresasarray[i,j]);
+                end;
            end;
            writeln('');
            writeln('Seleccionar ', empresasarray[1,6],': ');
@@ -375,6 +422,7 @@ begin
       end;
       Clientes();
 end;
+
 //-------------------------------------------------------------------------------------------------------------------
 //ConsultaProyectos--------------------------------------------------------------------------------------------------
 procedure ConsultaProyectos();
@@ -391,11 +439,32 @@ procedure ConsultaProyectos();
                   writeln('Proyecto Numero ',i,': ');
                   for j:=1 to 6 do
                   begin
-                       writeln(proyectosarray[1,j],': ', proyectosarray[i,j]);
+                       if (j=3) or (j=4) then
+                       begin
+                             case (proyectosarray[i,j][1]) of
+                             'c':writeln(proyectosarray[1,j],': ','Casa');
+                             'C':writeln(proyectosarray[1,j],': ','Casa');
+                             'd':writeln(proyectosarray[1,j],': ','Edificio Departamento');
+                             'D':writeln(proyectosarray[1,j],': ','Edificio Departamento');
+                             'o':if j=3 then writeln(proyectosarray[1,j],': ','Edificio Oficina') else writeln(proyectosarray[1,j],': ','Obra');
+                             'O':if j=3 then writeln(proyectosarray[1,j],': ','Edificio Oficina') else writeln(proyectosarray[1,j],': ','Obra');
+                             'l':writeln(proyectosarray[1,j],': ','Loteos');
+                             'L':writeln(proyectosarray[1,j],': ','Loteos');
+                             'p':writeln(proyectosarray[1,j],': ','Preventa');
+                             'P':writeln(proyectosarray[1,j],': ','Preventa');
+                             't':writeln(proyectosarray[1,j],': ','Terminado');
+                             'T':writeln(proyectosarray[1,j],': ','Terminado');
+                             end;
+                       end
+                       else
+                       begin
+                           writeln(proyectosarray[1,j],': ', proyectosarray[i,j]);
+                       end;
                   end;
              end;
         end;
    end;
+
 begin
     writeln('Consulta de Proyectos: ');
     writeln('1. Casa');
@@ -494,11 +563,13 @@ begin
      writeln('');
      writeln('1.EMPRESAS'); 
      writeln('2.CLIENTES');
+     if avatarstate=true then writeln('9.datos de ejemplo');
      writeln('0.salir');
      readln(intdescart);
      case intdescart of
           1:ValidarClave(0);
           2:ValidarClave(1);
+          9:DatosPruebas();
           0:writeln('Saliendo del programa...');
           else writeln(intdescart,' no es una opcion valida');
      end;
@@ -598,23 +669,91 @@ begin
      end;
 end;
 
+//----------------------------------------------------------------------------------------------------------------------
+//Procedure DatosPruebas------------------------------------------------------------------------------------------------
+procedure DatosPruebas();
+begin
+     ciudadesarray[2,1]:='ROS';
+     ciudadesarray[2,2]:='Rosario';
+     
+     ciudadesarray[3,1]:='VTO';
+     ciudadesarray[3,2]:='Venado Tuerto';
+     
+     ciudadesarray[4,1]:='CBA';
+     ciudadesarray[4,2]:='Cordoba';
+     
+     ciudadesarray[5,1]:='BSA';
+     ciudadesarray[5,2]:='Buenos Aires';
+
+     empresasarray[2,1]:='APL';
+     empresasarray[2,2]:='Apple';
+     empresasarray[2,3]:='San Martin 1890';
+     empresasarray[2,4]:='apple@android.com';
+     empresasarray[2,5]:='382479893294';
+     empresasarray[2,6]:='CBA';
+
+     empresasarray[3,1]:='MEL';
+     empresasarray[3,2]:='Mercado Libre';
+     empresasarray[3,3]:='Balcarce 6890';
+     empresasarray[3,4]:='pedro@mercadolibre.com';
+     empresasarray[3,5]:='78674733884333243465';
+     empresasarray[3,6]:='VTO';
+
+     empresasarray[4,1]:='ARC';
+     empresasarray[4,2]:='Arcor';
+     empresasarray[4,3]:='Italia 7655';
+     empresasarray[4,4]:='administracionarcor@gmail.com';
+     empresasarray[4,5]:='575763';
+     empresasarray[4,6]:='ROS';
+
+     empresasarray[5,1]:='QUI';
+     empresasarray[5,2]:='Quilmes';
+     empresasarray[5,3]:='Av. Circumvalacion 890';
+     empresasarray[5,4]:='quilemes@quilmes.com';
+     empresasarray[5,5]:='+54 9 3462 764589';
+     empresasarray[5,6]:='BSA';
+
+     proyectosarray[2,1]:='001';
+     proyectosarray[2,2]:='QUI';
+     proyectosarray[2,3]:='o';
+     proyectosarray[2,4]:='o';
+     proyectosarray[2,5]:='ROS';
+     proyectosarray[2,6]:='10';
+
+     proyectosarray[3,1]:='002';
+     proyectosarray[3,2]:='MEL';
+     proyectosarray[3,3]:='T';
+     proyectosarray[3,4]:='D';
+     proyectosarray[3,5]:='VTO';
+     proyectosarray[3,6]:='3';
+
+     proyectosarray[4,1]:='003';
+     proyectosarray[4,2]:='APL';
+     proyectosarray[4,3]:='p';
+     proyectosarray[4,4]:='l';
+     proyectosarray[4,5]:='CBA';
+     proyectosarray[4,6]:='23';
+
+end;
+
 //--------------------------------------------------------------------------------------------------------------------------------
 //**Arranca la aplicacion**********************************************************************************************
 //---------------------------------------------------------------------------------------------------------------------------------
 begin
+     avatarState:=false;
 
-     avatarState:=true;
-
-     iniciarDatos();
-     writeln('');
-     writeln('Bienvenidos  a Nuestro TP2 :');
      writeln('Presione ENTER para continuar');
      readln(descartar);
-     if descartar='avatar' then
+     if descartar='avatar' then //Esto es donde estan escondidas las lineas que usamos para hacer el debugging
      begin
           writeln('El Estado Avatar es un mecanismo de defensa, diseñado para potenciarte con todas las habilidades y la sabiduría de los antiguos Avatares.', ' El brillo es la combinación de todas tus vidas pasadas, que concentran su energía en tu cuerpo. En Estado Avatar, eres sumamente poderoso... pero también, eres muy vulnerable.', ' Si tú mueres en Estado Avatar, el ciclo de reencarnación se rompería, y el Avatar... dejaría de existir.');
           writeln('-Roku a Aang');
           avatarstate:=true;
      end;
+
+     iniciarDatos();
+     writeln('');
+     writeln('Bienvenidos  a Nuestro TP2 :');
+
      MenuPrincipal();
 end.
