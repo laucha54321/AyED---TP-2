@@ -391,7 +391,6 @@ end;
 procedure AltaProductos();
 begin
      writeln('TODAVIA ESTAMOS TRABAJANDO EN ALTA PRODUCTOS PARA MAS INFORMACION IR A: ');
-     writeln('https://github.com/laucha54321/AyED---TP-2');
      writeln('');
      writeln('Presiona ENTER para continuar');
      readln();
