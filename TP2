@@ -5,8 +5,11 @@ type
     array6 = array[1..10,1..6] of string;
     array2 = array[1..10,1..2] of string;
 var
-   avatarState: boolean;   //es para ver la informacion que no le quiero mostrar al usuario pero le puede servir al que esta tipeando codigo
+   avatarState: boolean;
+   //es para ver la informacion que no le quiero mostrar al usuario pero le puede servir al que esta tipeando codigo
 
+   intentosclave:integer;
+   //Cantidad de veces que se ingresa la clave de manera incorrecta
 
    descartar: string;
    intdescart: integer;
@@ -560,7 +563,8 @@ begin
             if(claveClientes=clave) then
                Clientes()
             else
-                writeln('Clave Incorrecta');
+                intentosclave:=intentosclave+1;
+                writeln('Clave Incorrecta intentos restantes:',3-intentosclave,'.');
        end
     else
     begin
@@ -569,7 +573,8 @@ begin
         if(clave=claveEmpresas) then
             Empresas()
         else
-            writeln('Clave Incorrecta');
+            intentosclave:=intentosclave+1;
+            writeln('Clave Incorrecta intentos restantes:',3-intentosclave,'.');
    end;
 end;
 
@@ -651,11 +656,11 @@ begin
      writeln('0.salir');
      readln(intdescart);
      case intdescart of
-          1:ValidarClave(0);
-          2:ValidarClave(1);
+          1:if intentosclave < 3 then ValidarClave(0) else writeln('Los intentos han sido agotados');
+          2:if intentosclave < 3 then ValidarClave(1) else writeln('Los intentos han sido agotados');
           8:DatosPruebas();
           9:VerDatos();
-          0:writeln('Saliendo del programa...');
+          0:begin writeln('Saliendo del programa...'); halt(); end;
           else writeln(intdescart,' no es una opcion valida');
      end;
      MenuPrincipal();
@@ -826,6 +831,7 @@ end;
 //---------------------------------------------------------------------------------------------------------------------------------
 begin
      avatarState:=false;
+     intentosclave:=0;
      iniciarDatos();
      writeln('Presione ENTER para continuar');
      readln(descartar);
