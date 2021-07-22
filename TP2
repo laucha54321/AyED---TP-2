@@ -160,6 +160,23 @@ begin
               end;
          end;
      end;
+     for k:=2 to 9 do
+     begin
+         for i:=2 to 9 do
+         begin
+              if (ciudadesarray[i,1]='-')then
+              begin
+              //Guardando los datos antes de sobreescribirlos
+                  aux[1]:=ciudadesarray[i+1,1];
+                  aux[2]:=ciudadesarray[i+1,2];
+              //Moviendo los datos a la derecha
+                  ciudadesarray[i+1,1]:=ciudadesarray[i,1];
+                  ciudadesarray[i+1,2]:=ciudadesarray[i,2];
+                  ciudadesarray[i,1]:=aux[1];
+                  ciudadesarray[i,2]:=aux[2];
+              end;
+         end;
+     end;
      if avatarstate=true then
      begin
           for i:=2 to 10 do
@@ -538,7 +555,7 @@ begin
 
     if (menu=1) then
        begin
-            writeln('Ingresar clave(menu clientes)');
+            writeln('Ingresar clave (menu clientes)');
             readln(clave);
             if(claveClientes=clave) then
                Clientes()
@@ -547,13 +564,79 @@ begin
        end
     else
     begin
-        writeln('Ingresar clave(menu empresas)');
+        writeln('Ingresar clave (menu empresas)');
         readln(clave);
         if(clave=claveEmpresas) then
             Empresas()
         else
             writeln('Clave Incorrecta');
    end;
+end;
+
+//----------------------------------------------------------------------------------------------------------
+//Procedure VerDatos----------------------------------------------------------------------------------------
+procedure VerDatos();
+var
+   i:integer;
+   j:integer;
+begin
+     writeln('');
+     writeln('El conocimiento es poder.');
+     writeln('');
+     writeln('Seleccione que quiere ver:');
+     writeln('1.EMPRESAS');
+     writeln('2.CIUDADES');
+     writeln('3.PROYECTOS');
+     writeln('4.CLIENTES');
+     readln(intdescart);
+     Case (intdescart) of
+     1:begin
+            writeln('Empresas:');
+            for i:=2 to 10 do
+            begin
+                 for j:=1 to 6 do
+                 begin
+                      writeln(empresasarray[1,j],': ',empresasarray[i,j]);
+                 end;
+            end;
+     end;
+     2:begin
+            writeln('');
+            writeln('Ciudades:');
+            for i:=2 to 10 do
+            begin
+                 for j:=1 to 2 do
+                 begin
+                      writeln(ciudadesarray[1,j],': ',ciudadesarray[i,j]);
+                 end;
+                 writeln('');
+            end;
+     end;
+     3:begin
+            writeln('');
+            writeln('Proyectos:');
+            for i:=2 to 10 do
+            begin
+                 for j:=1 to 6 do
+                 begin
+                      writeln(proyectosarray[1,j],': ',proyectosarray[i,j]);
+                 end;
+                 writeln('');
+            end;
+     end;
+     4:begin
+            writeln('');
+            writeln('Clientes:');
+            for i:=2 to 10 do
+            begin
+                 for j:=1 to 2 do
+                 begin
+                      writeln(clientesarray[1,j],': ',clientesarray[i,j]);
+                 end;
+                 writeln('');
+            end;
+     end;
+     end;
 end;
 
 //-------------------------------------------------------------------------------------------------------
@@ -563,13 +646,15 @@ begin
      writeln('');
      writeln('1.EMPRESAS'); 
      writeln('2.CLIENTES');
-     if avatarstate=true then writeln('9.datos de ejemplo');
+     if avatarstate=true then writeln('8.datos de ejemplo');
+     if avatarstate=true then writeln('9.ver datos');
      writeln('0.salir');
      readln(intdescart);
      case intdescart of
           1:ValidarClave(0);
           2:ValidarClave(1);
-          9:DatosPruebas();
+          8:DatosPruebas();
+          9:VerDatos();
           0:writeln('Saliendo del programa...');
           else writeln(intdescart,' no es una opcion valida');
      end;
@@ -741,7 +826,7 @@ end;
 //---------------------------------------------------------------------------------------------------------------------------------
 begin
      avatarState:=false;
-
+     iniciarDatos();
      writeln('Presione ENTER para continuar');
      readln(descartar);
      if descartar='avatar' then //Esto es donde estan escondidas las lineas que usamos para hacer el debugging
@@ -751,7 +836,7 @@ begin
           avatarstate:=true;
      end;
 
-     iniciarDatos();
+
      writeln('');
      writeln('Bienvenidos  a Nuestro TP2 :');
 
