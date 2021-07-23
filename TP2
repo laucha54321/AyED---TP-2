@@ -391,6 +391,7 @@ end;
 procedure AltaProductos();
 begin
      writeln('TODAVIA ESTAMOS TRABAJANDO EN ALTA PRODUCTOS PARA MAS INFORMACION IR A: ');
+     writeln('https://github.com/laucha54321/AyED---TP-2');
      writeln('');
      writeln('Presiona ENTER para continuar');
      readln();
@@ -550,15 +551,23 @@ var
     clave:string;
     claveEmpresas: string;
     claveClientes: string;
+    ch:char;
 begin
 
     claveClientes:='hola';
     claveEmpresas:='Empresas';
+    clave:='';
 
     if (menu=1) then
        begin
             writeln('Ingresar clave (menu clientes)');
-            readln(clave);
+            ch:=readkey;
+            WHILE ch<>#13 DO
+            begin
+                 clave:=clave+ch;
+                 write('*');
+                 ch:=readkey
+            end;
             if(claveClientes=clave) then
                Clientes()
             else
@@ -568,7 +577,13 @@ begin
     else
     begin
         writeln('Ingresar clave (menu empresas)');
-        readln(clave);
+        ch:=readkey;
+        WHILE ch<>#13 DO
+        begin
+             clave:=clave+ch;
+             write('*');
+             ch:=readkey
+        end;
         if(clave=claveEmpresas) then
             Empresas()
         else
@@ -829,7 +844,7 @@ end;
 //**Arranca la aplicacion**********************************************************************************************
 //---------------------------------------------------------------------------------------------------------------------------------
 begin
-     avatarState:=false;
+     avatarState:=true;
      intentosclave:=0;
      iniciarDatos();
      writeln('Presione ENTER para continuar');
@@ -840,8 +855,7 @@ begin
           writeln('-Roku a Aang');
           avatarstate:=true;
      end;
-
-
+     
      writeln('');
      writeln('Bienvenidos  a Nuestro TP2 :');
 
